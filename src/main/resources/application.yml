@@ -1,0 +1,38 @@
+user:
+  kafka:
+    store: task-user-state-store
+
+task:
+  kafka:
+    server: localhost:9092
+    topic: task
+    replicates: 1
+    partitions: 1
+    store: task-state-store
+    retention: -1
+    acks: all
+    retries: 10
+    requestimeout: 5000
+    batch: 163850
+    linger: 100
+    max-in-flight: 1
+    client-id: apollo-task
+    group-id: apollo-task-group
+    offset: latest
+
+
+spring:
+  cloud:
+    function:
+      definition: taskProcessor;
+    stream:
+      kafka:
+        streams:
+          binder:
+            application-id: apollo-task
+      bindings:
+        taskProcessor-in-0.destination: task
+        taskProcessor-out-0.destination: task-state-store
+
+server:
+  port: 8081
