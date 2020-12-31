@@ -8,8 +8,12 @@ import java.util.HashMap;
 
 public interface TaskUserService {
 
-    Flux<HashMap<TaskStatus,Task>> getUserTasks (String userId);
+    Flux<HashMap<TaskStatus,Task>> getUserTasks (String userId, String taskStatus);
 
     Flux<Task> getUserTasksByType (String userId, String taskType);
+
+    Flux<Task> getUserTasksByStatus(String userId, String taskStatus);
+
+    Flux<Task> getUserTasksByGroupName(String userId, String groupName);
 
 }

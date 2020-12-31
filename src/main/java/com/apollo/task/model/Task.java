@@ -1,5 +1,6 @@
 package com.apollo.task.model;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Calendar;
@@ -7,6 +8,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.UUID;
 
+@Data
 @RequiredArgsConstructor
 public class Task {
 

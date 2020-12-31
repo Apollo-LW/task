@@ -9,8 +9,8 @@ public class Quiz {
     private Date quizDueDate;
     private String quizName = quizId + "-" + quizDateOfCreation;
     private HashMap<String, String > quizQuestions = new HashMap<>();
-    private HashMap<String, List> quizAnswerOptions;
-    private HashMap<String, String> quizAnswer;
+    private HashMap<String, List> quizAnswerOptions = new HashMap<>();
+    private HashMap<String, String> quizAnswer = new HashMap<>();
     private String quizChapterId;
     private String quizCourseId;
     private String quizOwnerId;

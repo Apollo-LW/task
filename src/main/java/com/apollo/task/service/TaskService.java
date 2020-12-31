@@ -1,18 +1,18 @@
 package com.apollo.task.service;
 
 import com.apollo.task.model.Task;
-import com.apollo.task.model.TaskStatus;
-import com.apollo.task.model.TaskType;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Optional;
 
 public interface TaskService {
 
-    Flux<TaskType> getTaskTypes ();
+    Mono<Optional<Task>> getTaskById (String taskId);
 
-    Flux<TaskStatus> getTaskStatus ();
+    Mono<Task> postTask (Mono<Task> taskMono);
 
-    Mono<Task> getTaskById (String taskId);
+    Mono<Task> updateTask (Mono<Task> taskMono);
 
-
+   // Mono<Boolean> updateTask
+    Mono<Boolean> deleteTask(String taskId);
 }

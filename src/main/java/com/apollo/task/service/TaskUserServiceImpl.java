@@ -8,10 +8,12 @@ import org.apache.kafka.streams.state.QueryableStoreTypes;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.binder.kafka.streams.InteractiveQueryService;
+import org.springframework.web.util.WebAppRootListener;
 import reactor.core.publisher.Flux;
 
 
 import java.util.HashMap;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class TaskUserServiceImpl implements TaskUserService {
@@ -29,7 +31,7 @@ public class TaskUserServiceImpl implements TaskUserService {
 
 
     @Override
-    public Flux<HashMap<TaskStatus, Task>> getUserTasks(String userId) {
+    public Flux<HashMap<TaskStatus, Task>> getUserTasks(String userId, String taskStatus) {
         return Flux.fromIterable(getTaskUserStateStore().get(userId).getUserTaskByStatus().values());
         // I don't know if this is correct
     }
@@ -40,7 +42,30 @@ public class TaskUserServiceImpl implements TaskUserService {
         return Flux.fromIterable(getTaskUserStateStore().get(userId).getUserTaskByType().values());
         }
         else{
-            return Flux.fromIterable(getTaskUserStateStore().get(userId).getUserTaskByType().);
+            List<Task> userTasks = (List<Task>) getTaskUserStateStore().get(userId).getUserTaskByType().get(taskType);
+            return Flux.fromIterable(userTasks);
+        }
+    }
+
+    @Override
+    public Flux<Task> getUserTasksByStatus(String userId, String taskStatus) {
+        if(taskStatus == null){
+            return Flux.fromIterable(getTaskUserStateStore().get(userId).getUserTaskByStatus().values());
+        }
+        else{
+            List<Task> userTasks = (List<Task>) getTaskUserStateStore().get(userId).getUserTaskByStatus().get(taskStatus);
+            return Flux.fromIterable(userTasks);
+        }
+    }
+
+    @Override
+    public Flux<Task> getUserTasksByGroupName(String userId, String groupName) {
+        if(groupName == null){
+            return Flux.fromIterable(getTaskUserStateStore().get(userId).getUserTaskByGroupName().values());
+        }
+        else{
+            List<Task> userTasks = (List<Task>) getTaskUserStateStore().get(userId).getUserTaskByGroupName().get(groupName);
+            return Flux.fromIterable(userTasks);
         }
     }
 
