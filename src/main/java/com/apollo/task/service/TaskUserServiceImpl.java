@@ -31,7 +31,7 @@ public class TaskUserServiceImpl implements TaskUserService {
 
 
     @Override
-    public Flux<HashMap<TaskStatus, Task>> getUserTasks(String userId, String taskStatus) {
+    public Flux<HashMap<TaskStatus, Task>> getUserTasks(String userId) {
         return Flux.fromIterable(getTaskUserStateStore().get(userId).getUserTaskByStatus().values());
         // I don't know if this is correct
     }
