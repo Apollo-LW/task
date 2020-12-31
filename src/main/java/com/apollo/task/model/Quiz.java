@@ -1,7 +1,12 @@
 package com.apollo.task.model;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
 import java.util.*;
 
+@RequiredArgsConstructor
+@Data
 public class Quiz {
 
     private final String quizId = UUID.randomUUID().toString();

@@ -1,6 +1,8 @@
 package com.apollo.task.kafka;
 
+import com.apollo.task.model.Quiz;
 import com.apollo.task.model.Task;
+import com.sun.el.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -21,6 +23,10 @@ public class KafkaService {
     private String taskTopicName;
     private final KafkaSender<String, Task> taskKafkaSender;
 
+    @Value("${quiz.kafka.topic}")
+    private String quizTopicName;
+    private final KafkaSender<String, Quiz> quizKafkaSender;
+
 
     public Mono<Optional<Task>> sendTaskRecord(Mono<Task> taskMono){
         return taskMono.flatMap(task -> this.taskKafkaSender
@@ -29,4 +35,10 @@ public class KafkaService {
                 .map(senderResult -> senderResult.exception() == null ? Optional.of(task): Optional.empty()));
     }
 
+    public Mono<Optional<Quiz>> sendQuizRecord(Mono<Quiz> quizMono){
+        return quizMono.flatMap(quiz -> this.quizKafkaSender
+                .send(Mono.just(SenderRecord.create (new ProducerRecord<String, Quiz>(this.quizTopicName, quiz.getQuizId(), quiz),1)))
+                .next().doOnNext(log :: info).doOnError(log :: error)
+                .map(senderResult -> senderResult.exception() == null ? Optional.of(quiz): Optional.empty()));
+    }
 }

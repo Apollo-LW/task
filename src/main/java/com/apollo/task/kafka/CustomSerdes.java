@@ -1,5 +1,6 @@
 package com.apollo.task.kafka;
 
+import com.apollo.task.model.Quiz;
 import com.apollo.task.model.Task;
 import com.apollo.task.model.TaskUser;
 import org.apache.kafka.common.serialization.Serde;
@@ -22,6 +23,12 @@ public class CustomSerdes {
         }
     }
 
+    static public final class QuizSerde extends Serdes.WrapperSerde<Quiz>{
+        public QuizSerde() {
+            super(new JsonSerializer<>() , new JsonDeserializer<>(Quiz.class));
+        }
+    }
+
     @Contract(" -> new ")
     public static Serde<Task> taskSerde() {
         return new CustomSerdes.TaskSerde();
@@ -31,4 +38,7 @@ public class CustomSerdes {
     public static Serde<TaskUser> taskUserSerde() {
         return new CustomSerdes.TaskUserSerde();
     }
+
+    @Contract(" -> new ")
+    public static Serde<Quiz> quizSerde() { return new CustomSerdes.QuizSerde(); }
 }

@@ -66,6 +66,7 @@ public class KafkaConfiguration {
     }
 
 
+
     @Bean
     KafkaSender taskKafkaSender() {
         final Properties taskSenderProperties = new Properties();
@@ -95,4 +96,16 @@ public class KafkaConfiguration {
 
         return new DefaultKafkaReceiver(ConsumerFactory.INSTANCE , ReceiverOptions.create(taskReceiverProperties).subscription(Collections.singleton(this.topicName)));
     }
+
+    @Bean
+    public NewTopic createQuizTopic() {
+        return TopicBuilder
+                .name(this.topicName)
+                .partitions(this.numberOfPartitions)
+                .replicas(this.numberOfReplicas)
+                .config(TopicConfig.RETENTION_MS_CONFIG , this.retentionPeriod)
+                .build();
+    }
+
+
 }
