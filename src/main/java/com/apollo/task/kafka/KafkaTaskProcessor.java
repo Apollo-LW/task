@@ -23,7 +23,6 @@ public class KafkaTaskProcessor {
 
     @Bean
     public Function<KStream<String , Quiz>, KTable<String , Quiz>> quizProcessor() {
-    return null;
-
+       return null;
     }
 }
