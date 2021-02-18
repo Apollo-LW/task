@@ -11,7 +11,7 @@ public interface QuizService {
 
     Mono<Quiz> saveQuiz(final Mono<Quiz> quizMono);
 
-    Mono<Quiz> updateQuiz(final Mono<Quiz> quizMono);
+    Mono<Boolean> updateQuiz(final Mono<Quiz> quizMono , final String quizOwnerId);
 
-    Mono<Boolean> deleteQuiz(final String quizId);
+    Mono<Boolean> deleteQuiz(final String quizId , final String quizOwnerId);
 }
