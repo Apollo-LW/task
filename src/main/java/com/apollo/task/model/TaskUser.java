@@ -1,18 +1,18 @@
 package com.apollo.task.model;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Data
-@RequiredArgsConstructor
-public class TaskUser extends Task{
+public class TaskUser {
 
     private String userId;
-    private HashMap userTaskByType = new HashMap<TaskType , HashSet<Task>>();
-    private HashMap userTaskByStatus = new HashMap <TaskStatus , HashSet<Task>>();
-    private HashMap userTaskByGroupName = new HashMap<String , HashSet<Task>>();
+    private Map<TaskType, Set<Task>> userTaskByType = new HashMap<TaskType, Set<Task>>();
+    private Map<TaskStatus, Set<Task>> userTaskByStatus = new HashMap<TaskStatus, Set<Task>>();
+    private Map<String, Set<Task>> userTaskByGroupName = new HashMap<String, Set<Task>>();
 
 }
+
