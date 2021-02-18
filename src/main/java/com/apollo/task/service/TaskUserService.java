@@ -12,5 +12,4 @@ public interface TaskUserService {
     Flux<Task> getUserTasksByStatus(final String userId , final String taskStatus);
 
     Flux<Task> getUserTasksByGroupName(final String userId , String groupName);
-
 }
