@@ -10,9 +10,9 @@ import java.util.Set;
 public class TaskUser {
 
     private String userId;
-    private Map<TaskType, Set<Task>> userTaskByType = new HashMap<TaskType, Set<Task>>();
-    private Map<TaskStatus, Set<Task>> userTaskByStatus = new HashMap<TaskStatus, Set<Task>>();
-    private Map<String, Set<Task>> userTaskByGroupName = new HashMap<String, Set<Task>>();
+    private Map<TaskType, Set<Task>> userTaskByType = new HashMap<>();
+    private Map<TaskStatus, Set<Task>> userTaskByStatus = new HashMap<>();
+    private Map<String, Set<Task>> userTaskByGroupName = new HashMap<>();
 
 }
 
