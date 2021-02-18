@@ -39,8 +39,8 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public Mono<Quiz> saveQuiz(final Mono<Quiz> quizMono) {
-        return this.kafkaService.sendQuizRecord(quizMono).map(Optional::get);
+    public Mono<Optional<Quiz>> saveQuiz(final Mono<Quiz> quizMono) {
+        return this.kafkaService.sendQuizRecord(quizMono);
     }
 
     @Override

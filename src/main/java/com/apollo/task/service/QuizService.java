@@ -9,7 +9,7 @@ public interface QuizService {
 
     Mono<Optional<Quiz>> getQuizById(final String quizId);
 
-    Mono<Quiz> saveQuiz(final Mono<Quiz> quizMono);
+    Mono<Optional<Quiz>> saveQuiz(final Mono<Quiz> quizMono);
 
     Mono<Boolean> updateQuiz(final Mono<Quiz> quizMono , final String quizOwnerId);
 
