@@ -28,15 +28,17 @@ quiz:
 spring:
   cloud:
     function:
-      definition: taskProcessor;
+      definition: taskProcessorState;
     stream:
       kafka:
         streams:
           binder:
-            application-id: apollo-task
+            functions:
+              taskProcessorState:
+                application-id: apollo-task
       bindings:
-        taskProcessor-in-0.destination: task
-        taskProcessor-out-0.destination: task-state-store
+        taskProcessorState-in-0.destination: ${task.kafka.topic}
+        taskProcessorState-out-0.destination: ${task.kafka.store}
 
 server:
   port: 8081
