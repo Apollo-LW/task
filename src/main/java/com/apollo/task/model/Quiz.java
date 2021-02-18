@@ -1,23 +1,19 @@
 package com.apollo.task.model;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import java.util.*;
 
-@RequiredArgsConstructor
 @Data
 public class Quiz {
 
+    private Date quizDueDate;
+    private Boolean isActive, isPublic;
+    private String quizChapterId, quizCourseId, quizOwnerId, quizDuration;
     private final String quizId = UUID.randomUUID().toString();
     private final Date quizDateOfCreation = Calendar.getInstance().getTime();
-    private Date quizDueDate;
     private String quizName = quizId + "-" + quizDateOfCreation;
-    private HashMap<String, String > quizQuestions = new HashMap<>();
-    private HashMap<String, List> quizAnswerOptions = new HashMap<>();
-    private HashMap<String, String> quizAnswer = new HashMap<>();
-    private String quizChapterId;
-    private String quizCourseId;
-    private String quizOwnerId;
-    private String quizDuration;
+    private Map<String, String> quizQuestions = new HashMap<>();
+    private Map<String, String> quizAnswerOptions = new HashMap<>();
+    private Map<String, String> quizAnswer = new HashMap<>();
 }

@@ -20,6 +20,10 @@ task:
     group-id: apollo-task-group
     offset: latest
 
+quiz:
+  kafka:
+    topic: quiz
+
 
 spring:
   cloud:
