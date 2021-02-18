@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -35,6 +36,12 @@ public class TaskUserServiceImpl implements TaskUserService {
         return Mono.just(Optional.ofNullable(this.getTaskUserStateStore().get(userId)));
     }
 
+    private String toEnumString(final String s) {
+        String enumString = s.toUpperCase(Locale.ROOT);
+        enumString = enumString.replaceAll(" " , "_");
+        return enumString;
+    }
+
     @Override
     public Flux<Task> getUserTasks(final String userId) {
         return this.getUserById(userId).flatMapMany(taskUserOptional -> {
@@ -48,6 +55,7 @@ public class TaskUserServiceImpl implements TaskUserService {
         if (taskType == null) return this.getUserTasks(userId);
         return this.getUserById(userId).flatMapMany(taskUserOptional -> {
             if (taskUserOptional.isEmpty()) return Flux.empty();
+            final String enumTaskType = this.toEnumString(taskType);
             return Flux.fromIterable(taskUserOptional.get().getUserTaskByType().get(TaskType.valueOf(taskType)));
         });
     }
@@ -57,6 +65,7 @@ public class TaskUserServiceImpl implements TaskUserService {
         if (taskStatus == null) return this.getUserTasks(userId);
         return this.getUserById(userId).flatMapMany(taskUserOptional -> {
             if (taskUserOptional.isEmpty()) return Flux.empty();
+            final String enumTaskStatus = this.toEnumString(taskStatus);
             return Flux.fromIterable(taskUserOptional.get().getUserTaskByStatus().get(TaskStatus.valueOf(taskStatus)));
         });
     }
@@ -66,6 +75,7 @@ public class TaskUserServiceImpl implements TaskUserService {
         if (groupName == null) return this.getUserTasks(userId);
         return this.getUserById(userId).flatMapMany(taskUserOptional -> {
             if (taskUserOptional.isEmpty()) return Flux.empty();
+            final String upperCaseGroupName = groupName.toUpperCase(Locale.ROOT);
             return Flux.fromIterable(taskUserOptional.get().getUserTaskByGroupName().get(groupName));
         });
     }
