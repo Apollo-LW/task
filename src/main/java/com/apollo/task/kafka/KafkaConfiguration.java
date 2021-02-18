@@ -29,7 +29,9 @@ public class KafkaConfiguration {
     @Value("${task.kafka.server}")
     private String bootstrapServer;
     @Value("${task.kafka.topic}")
-    private String topicName;
+    private String taskTopicName;
+    @Value("${quiz.kafka.topic}")
+    private String quizTopicName;
     @Value("${task.kafka.partition}")
     private Integer numberOfPartitions;
     @Value("${task.kafka.replicas}")
@@ -58,14 +60,22 @@ public class KafkaConfiguration {
     @Bean
     public NewTopic createTaskTopic() {
         return TopicBuilder
-                .name(this.topicName)
+                .name(this.taskTopicName)
                 .partitions(this.numberOfPartitions)
                 .replicas(this.numberOfReplicas)
                 .config(TopicConfig.RETENTION_MS_CONFIG , this.retentionPeriod)
                 .build();
     }
 
-
+    @Bean
+    public NewTopic createQuizTopic() {
+        return TopicBuilder
+                .name(this.quizTopicName)
+                .partitions(this.numberOfPartitions)
+                .replicas(this.numberOfReplicas)
+                .config(TopicConfig.RETENTION_MS_CONFIG , this.retentionPeriod)
+                .build();
+    }
 
     @Bean
     KafkaSender taskKafkaSender() {
@@ -94,18 +104,7 @@ public class KafkaConfiguration {
         taskReceiverProperties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG , true);
         taskReceiverProperties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG , this.offset);
 
-        return new DefaultKafkaReceiver(ConsumerFactory.INSTANCE , ReceiverOptions.create(taskReceiverProperties).subscription(Collections.singleton(this.topicName)));
+        return new DefaultKafkaReceiver(ConsumerFactory.INSTANCE , ReceiverOptions.create(taskReceiverProperties).subscription(Collections.singleton(this.taskTopicName)));
     }
-
-    @Bean
-    public NewTopic createQuizTopic() {
-        return TopicBuilder
-                .name(this.topicName)
-                .partitions(this.numberOfPartitions)
-                .replicas(this.numberOfReplicas)
-                .config(TopicConfig.RETENTION_MS_CONFIG , this.retentionPeriod)
-                .build();
-    }
-
 
 }

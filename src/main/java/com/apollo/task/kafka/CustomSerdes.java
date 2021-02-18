@@ -23,10 +23,9 @@ public class CustomSerdes {
         }
     }
 
-    static public final class QuizSerde extends Serdes.WrapperSerde<Quiz>{
-        public QuizSerde() {
-            super(new JsonSerializer<>() , new JsonDeserializer<>(Quiz.class));
-        }
+    @Contract(" -> new ")
+    public static Serde<Quiz> quizSerde() {
+        return new CustomSerdes.QuizSerde();
     }
 
     @Contract(" -> new ")
@@ -39,6 +38,9 @@ public class CustomSerdes {
         return new CustomSerdes.TaskUserSerde();
     }
 
-    @Contract(" -> new ")
-    public static Serde<Quiz> quizSerde() { return new CustomSerdes.QuizSerde(); }
+    static public final class QuizSerde extends Serdes.WrapperSerde<Quiz> {
+        public QuizSerde() {
+            super(new JsonSerializer<>() , new JsonDeserializer<>(Quiz.class));
+        }
+    }
 }
