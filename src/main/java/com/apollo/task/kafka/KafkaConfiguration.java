@@ -1,6 +1,5 @@
 package com.apollo.task.kafka;
 
-import com.apollo.task.model.Task;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -90,7 +89,7 @@ public class KafkaConfiguration {
         taskSenderProperties.put(ProducerConfig.LINGER_MS_CONFIG , this.linger);
         taskSenderProperties.put(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION , this.maxInFlight);
 
-        return new DefaultKafkaSender<String, Task>(ProducerFactory.INSTANCE , SenderOptions.create(taskSenderProperties));
+        return new DefaultKafkaSender(ProducerFactory.INSTANCE , SenderOptions.create(taskSenderProperties));
     }
 
     @Bean
