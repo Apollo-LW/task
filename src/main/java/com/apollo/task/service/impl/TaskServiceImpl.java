@@ -1,6 +1,6 @@
 package com.apollo.task.service.impl;
 
-import com.apollo.task.kafka.KafkaService;
+import com.apollo.task.kafka.service.KafkaService;
 import com.apollo.task.model.Task;
 import com.apollo.task.model.TaskStatus;
 import com.apollo.task.service.TaskService;

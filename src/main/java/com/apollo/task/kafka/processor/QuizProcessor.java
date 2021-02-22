@@ -10,12 +10,23 @@ import org.springframework.stereotype.Service;
 
 import java.util.function.Function;
 
+/**
+ * Main Quiz Processor that handle basic final state operations for the quiz
+ */
 @Service
 public class QuizProcessor {
 
+    /**
+     * Main Quiz Topic Name
+     */
     @Value("${quiz.kafka.store}")
     private String quizStateStoreName;
 
+    /**
+     * Updating the quiz event into it's final state from the {@link KStream}
+     *
+     * @return a {@link KTable} that have the final state of the events with the {@link Quiz#getQuizId()} as the key
+     */
     @Bean
     public Function<KStream<String, Quiz>, KTable<String, Quiz>> quizProcessorState() {
         return quizKStream -> quizKStream

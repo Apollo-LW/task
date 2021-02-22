@@ -1,6 +1,6 @@
 package com.apollo.task.service.impl;
 
-import com.apollo.task.kafka.KafkaService;
+import com.apollo.task.kafka.service.KafkaService;
 import com.apollo.task.model.Quiz;
 import com.apollo.task.service.QuizService;
 import lombok.RequiredArgsConstructor;
