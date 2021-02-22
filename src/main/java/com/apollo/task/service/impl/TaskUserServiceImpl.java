@@ -17,31 +17,69 @@ import reactor.core.publisher.Mono;
 import java.util.Locale;
 import java.util.Optional;
 
+/**
+ * Main {@link TaskUserService} Implementation to deal with events and Kafka
+ */
 @Service
 @RequiredArgsConstructor
 public class TaskUserServiceImpl implements TaskUserService {
 
+    /**
+     * {@link InteractiveQueryService} to get the Task User State Store
+     */
+    private final InteractiveQueryService interactiveQueryService;
+    /**
+     * Task and User topic name
+     */
     @Value("${task.user.kafka.store}")
     private String taskUserStateStoreName;
-    private final InteractiveQueryService interactiveQueryService;
+    /**
+     * Main Task User State Store
+     */
     private ReadOnlyKeyValueStore<String, TaskUser> taskUserStateStore;
 
+    /**
+     * Get the {@link ReadOnlyKeyValueStore} from the {@link InteractiveQueryService} so it can be accessed
+     *
+     * @return a {@link ReadOnlyKeyValueStore} which is the Task User State Store
+     */
     private ReadOnlyKeyValueStore<String, TaskUser> getTaskUserStateStore() {
         if (this.taskUserStateStore == null)
             this.taskUserStateStore = this.interactiveQueryService.getQueryableStore(this.taskUserStateStoreName , QueryableStoreTypes.keyValueStore());
         return this.taskUserStateStore;
     }
 
+    /**
+     * Return a {@link TaskUser} object in it's final state
+     *
+     * @param userId the userId of the {@link TaskUser#getUserId()} that we want
+     *
+     * @return a {@link Optional} of the TaskUser
+     */
     private Mono<Optional<TaskUser>> getUserById(final String userId) {
         return Mono.just(Optional.ofNullable(this.getTaskUserStateStore().get(userId)));
     }
 
+    /**
+     * get the enum value of a string
+     *
+     * @param s the string to get the enum from
+     *
+     * @return a the string in ALL CAPS and underscores instead of spaces
+     */
     private String toEnumString(final String s) {
         String enumString = s.toUpperCase(Locale.ROOT);
         enumString = enumString.replaceAll(" " , "_");
         return enumString;
     }
 
+    /**
+     * Get user tasks
+     *
+     * @param userId the userId of the {@link TaskUser} that we want the tasks to
+     *
+     * @return all user tasks
+     */
     @Override
     public Flux<Task> getUserTasks(final String userId) {
         return this.getUserById(userId).flatMapMany(taskUserOptional -> {
@@ -50,6 +88,14 @@ public class TaskUserServiceImpl implements TaskUserService {
         });
     }
 
+    /**
+     * Get user tasks by {@link TaskType}
+     *
+     * @param userId   the userId of the {@link TaskUser} that we want the tasks to
+     * @param taskType the {@link TaskType} of the tasks that we want
+     *
+     * @return all user tasks that is associated with the {@link TaskType}
+     */
     @Override
     public Flux<Task> getUserTasksByType(final String userId , final String taskType) {
         if (taskType == null) return this.getUserTasks(userId);
@@ -60,6 +106,14 @@ public class TaskUserServiceImpl implements TaskUserService {
         });
     }
 
+    /**
+     * Get user tasks by {@link TaskStatus}
+     *
+     * @param userId     the userId of the {@link TaskUser} that we want the tasks to
+     * @param taskStatus the {@link TaskStatus} of the tasks that we want
+     *
+     * @return all user tasks that is associated with {@link TaskStatus}
+     */
     @Override
     public Flux<Task> getUserTasksByStatus(final String userId , final String taskStatus) {
         if (taskStatus == null) return this.getUserTasks(userId);
@@ -70,6 +124,14 @@ public class TaskUserServiceImpl implements TaskUserService {
         });
     }
 
+    /**
+     * Get user tasks by {@link Task#getTaskGroupName()}
+     *
+     * @param userId    the userId of the {@link TaskUser} that we want the tasks to
+     * @param groupName the group name of the task
+     *
+     * @return all user tasks that is associated with the group name
+     */
     @Override
     public Flux<Task> getUserTasksByGroupName(final String userId , final String groupName) {
         if (groupName == null) return this.getUserTasks(userId);
