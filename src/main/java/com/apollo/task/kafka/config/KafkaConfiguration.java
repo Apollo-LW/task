@@ -1,6 +1,5 @@
-package com.apollo.task.kafka;
+package com.apollo.task.kafka.config;
 
-import com.apollo.task.model.Task;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -24,8 +23,14 @@ import reactor.kafka.sender.internals.ProducerFactory;
 import java.util.Collections;
 import java.util.Properties;
 
+/**
+ * Main Kafka Configuration for the producer {@link KafkaSender} and the consumer {@link KafkaReceiver}
+ */
 public class KafkaConfiguration {
 
+    /**
+     * Kafka Configuration constants
+     */
     @Value("${task.kafka.server}")
     private String bootstrapServer;
     @Value("${task.kafka.topic}")
@@ -57,6 +62,11 @@ public class KafkaConfiguration {
     @Value("${task.kafka.offset}")
     private String offset;
 
+    /**
+     * Create the main Task Topic in Kafka
+     *
+     * @return a {@link NewTopic} that is created
+     */
     @Bean
     public NewTopic createTaskTopic() {
         return TopicBuilder
@@ -67,6 +77,11 @@ public class KafkaConfiguration {
                 .build();
     }
 
+    /**
+     * Create the main Quiz Topic in Kafka
+     *
+     * @return a {@link NewTopic} that is created
+     */
     @Bean
     public NewTopic createQuizTopic() {
         return TopicBuilder
@@ -77,6 +92,11 @@ public class KafkaConfiguration {
                 .build();
     }
 
+    /**
+     * Create a reactive Kafka Producer
+     *
+     * @return a generic configured reactive Kafka Producer {@link KafkaSender}
+     */
     @Bean
     KafkaSender taskKafkaSender() {
         final Properties taskSenderProperties = new Properties();
@@ -90,9 +110,14 @@ public class KafkaConfiguration {
         taskSenderProperties.put(ProducerConfig.LINGER_MS_CONFIG , this.linger);
         taskSenderProperties.put(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION , this.maxInFlight);
 
-        return new DefaultKafkaSender<String, Task>(ProducerFactory.INSTANCE , SenderOptions.create(taskSenderProperties));
+        return new DefaultKafkaSender(ProducerFactory.INSTANCE , SenderOptions.create(taskSenderProperties));
     }
 
+    /**
+     * Create a reactive Kafka Consumer
+     *
+     * @return a generic configured reactive Kafka Consumer {@link KafkaReceiver}
+     */
     @Bean
     KafkaReceiver taskKafkaReceiver() {
         final Properties taskReceiverProperties = new Properties();

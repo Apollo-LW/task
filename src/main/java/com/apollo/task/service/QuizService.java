@@ -5,6 +5,10 @@ import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
+/**
+ * Main Quiz Operations,
+ * this is an abstraction of what can be done
+ */
 public interface QuizService {
 
     Mono<Optional<Quiz>> getQuizById(final String quizId);

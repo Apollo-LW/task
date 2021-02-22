@@ -1,6 +1,6 @@
 package com.apollo.task.kafka.processor;
 
-import com.apollo.task.kafka.CustomSerdes;
+import com.apollo.task.kafka.serde.CustomSerdes;
 import com.apollo.task.model.Task;
 import com.apollo.task.model.TaskUser;
 import org.apache.kafka.common.serialization.Serdes;
@@ -16,12 +16,23 @@ import org.springframework.stereotype.Service;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * The aggregation of tasks for each user Processor
+ */
 @Service
 public class TaskUserProcessor {
 
+    /**
+     * User task topic name
+     */
     @Value("${user.kafka.store}")
     private String taskUserStateStoreName;
 
+    /**
+     * Aggregating the tasks for each user from the {@link KStream}
+     *
+     * @return a {@link KTable} of {@link TaskUser} which is the join between the task and the user, with the userId as the key
+     */
     @Bean
     public Function<KStream<String, Task>, KTable<String, TaskUser>> taskUserProcessorState() {
         return taskKStream -> taskKStream

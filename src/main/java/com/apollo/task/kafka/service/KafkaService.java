@@ -1,4 +1,4 @@
-package com.apollo.task.kafka;
+package com.apollo.task.kafka.service;
 
 import com.apollo.task.model.Quiz;
 import com.apollo.task.model.Task;
@@ -12,6 +12,9 @@ import reactor.kafka.sender.SenderRecord;
 
 import java.util.Optional;
 
+/**
+ * Main Kafka Service to produce events
+ */
 @Service
 @RequiredArgsConstructor
 public class KafkaService {

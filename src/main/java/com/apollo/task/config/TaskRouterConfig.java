@@ -10,9 +10,21 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+/**
+ * Configuration for the main Task API router functions, to be able to route task requests to the correct handler
+ */
 @Configuration
 public class TaskRouterConfig {
 
+    /**
+     * Main routing function for the Task API
+     * Base URI will start with {@link RoutingConstant#TASK_PATH}
+     * and accept JSON data for all requests
+     *
+     * @param taskHandler the main handler for task operations
+     *
+     * @return a {@link RouterFunction} with the handler functions return type, which is a {@link ServerResponse} in this case
+     */
     @Bean
     public RouterFunction<ServerResponse> routeTask(final TaskHandler taskHandler) {
         return RouterFunctions

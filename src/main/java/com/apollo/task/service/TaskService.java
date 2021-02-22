@@ -5,6 +5,10 @@ import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
+/**
+ * Main Task Operations,
+ * this is an abstraction of what can be done
+ */
 public interface TaskService {
 
     Mono<Optional<Task>> getTaskById(final String taskId);

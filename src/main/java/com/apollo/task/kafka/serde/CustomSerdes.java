@@ -1,4 +1,4 @@
-package com.apollo.task.kafka;
+package com.apollo.task.kafka.serde;
 
 import com.apollo.task.model.Quiz;
 import com.apollo.task.model.Task;
@@ -9,6 +9,9 @@ import org.jetbrains.annotations.Contract;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
+/**
+ * Custom Serdes for the Task and User Objects
+ */
 public class CustomSerdes {
 
     static public final class TaskSerde extends Serdes.WrapperSerde<Task> {
@@ -23,16 +26,31 @@ public class CustomSerdes {
         }
     }
 
+    /**
+     * {@link Quiz} Serde
+     *
+     * @return a {@link Quiz} Serde for the {@link Quiz} object
+     */
     @Contract(" -> new ")
     public static Serde<Quiz> quizSerde() {
         return new CustomSerdes.QuizSerde();
     }
 
+    /**
+     * {@link Task} Serde
+     *
+     * @return a {@link Task} Serde for the {@link Task} object
+     */
     @Contract(" -> new ")
     public static Serde<Task> taskSerde() {
         return new CustomSerdes.TaskSerde();
     }
 
+    /**
+     * {@link TaskUser} Serde
+     *
+     * @return a {@link TaskUser} Serde for the {@link TaskUser} object
+     */
     @Contract(" -> new ")
     public static Serde<TaskUser> taskUserSerde() {
         return new CustomSerdes.TaskUserSerde();
