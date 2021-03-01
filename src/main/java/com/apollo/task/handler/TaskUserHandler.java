@@ -24,7 +24,9 @@ public class TaskUserHandler {
         return ServerResponse
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(userTasksFlux , Task.class);
+                .body(userTasksFlux , Task.class)
+                .switchIfEmpty(ServerResponse.notFound().build())
+                .doOnError(throwable -> ServerResponse.badRequest().build());
     }
 
     public @NotNull Mono<ServerResponse> getUserTaskByType(final ServerRequest request) {
@@ -34,7 +36,9 @@ public class TaskUserHandler {
         return ServerResponse
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(userTasksByTypeFlux , Task.class);
+                .body(userTasksByTypeFlux , Task.class)
+                .switchIfEmpty(ServerResponse.notFound().build())
+                .doOnError(throwable -> ServerResponse.badRequest().build());
     }
 
     public @NotNull Mono<ServerResponse> getUserTaskByStatus(final ServerRequest request) {
@@ -44,7 +48,9 @@ public class TaskUserHandler {
         return ServerResponse
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(userTasksByStatusFlux , Task.class);
+                .body(userTasksByStatusFlux , Task.class)
+                .switchIfEmpty(ServerResponse.notFound().build())
+                .doOnError(throwable -> ServerResponse.badRequest().build());
     }
 
     public @NotNull Mono<ServerResponse> getUserTaskByGroupName(final ServerRequest request) {
@@ -54,7 +60,9 @@ public class TaskUserHandler {
         return ServerResponse
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(userTasksByGroupNameFlux , Task.class);
+                .body(userTasksByGroupNameFlux , Task.class)
+                .switchIfEmpty(ServerResponse.notFound().build())
+                .doOnError(throwable -> ServerResponse.badRequest().build());
     }
 
 }
