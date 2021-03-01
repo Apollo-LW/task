@@ -1,5 +1,6 @@
 package com.apollo.task.service.impl;
 
+import com.apollo.task.constant.ErrorConstant;
 import com.apollo.task.model.Task;
 import com.apollo.task.model.TaskStatus;
 import com.apollo.task.model.TaskType;
@@ -57,6 +58,11 @@ public class TaskUserServiceImpl implements TaskUserService {
      * @return a {@link Optional} of the TaskUser
      */
     private Mono<Optional<TaskUser>> getUserById(final String userId) {
+        if (userId == null)
+            return Mono.error(new NullPointerException(ErrorConstant.USER_ID_NULL));
+        if (userId.length() == 0)
+            return Mono.error(new IllegalArgumentException(ErrorConstant.USER_ID_EMPTY));
+
         return Mono.just(Optional.ofNullable(this.getTaskUserStateStore().get(userId)));
     }
 
@@ -68,6 +74,8 @@ public class TaskUserServiceImpl implements TaskUserService {
      * @return a the string in ALL CAPS and underscores instead of spaces
      */
     private String toEnumString(final String s) {
+        if (s == null)
+            return null;
         String enumString = s.toUpperCase(Locale.ROOT);
         enumString = enumString.replaceAll(" " , "_");
         return enumString;
@@ -82,6 +90,11 @@ public class TaskUserServiceImpl implements TaskUserService {
      */
     @Override
     public Flux<Task> getUserTasks(final String userId) {
+        if (userId == null)
+            return Flux.error(new NullPointerException(ErrorConstant.USER_ID_NULL));
+        if (userId.length() == 0)
+            return Flux.error(new IllegalArgumentException(ErrorConstant.USER_ID_EMPTY));
+
         return this.getUserById(userId).flatMapMany(taskUserOptional -> {
             if (taskUserOptional.isEmpty()) return Flux.empty();
             return Flux.fromIterable(taskUserOptional.get().getUserTaskByType().values()).flatMap(Flux::fromIterable);
@@ -98,7 +111,13 @@ public class TaskUserServiceImpl implements TaskUserService {
      */
     @Override
     public Flux<Task> getUserTasksByType(final String userId , final String taskType) {
+        if (userId == null)
+            return Flux.error(new NullPointerException(ErrorConstant.USER_ID_NULL));
+        if (userId.length() == 0)
+            return Flux.error(new IllegalArgumentException(ErrorConstant.USER_ID_EMPTY));
+
         if (taskType == null) return this.getUserTasks(userId);
+
         return this.getUserById(userId).flatMapMany(taskUserOptional -> {
             if (taskUserOptional.isEmpty()) return Flux.empty();
             final String enumTaskType = this.toEnumString(taskType);
@@ -116,7 +135,13 @@ public class TaskUserServiceImpl implements TaskUserService {
      */
     @Override
     public Flux<Task> getUserTasksByStatus(final String userId , final String taskStatus) {
+        if (userId == null)
+            return Flux.error(new NullPointerException(ErrorConstant.USER_ID_NULL));
+        if (userId.length() == 0)
+            return Flux.error(new IllegalArgumentException(ErrorConstant.USER_ID_EMPTY));
+
         if (taskStatus == null) return this.getUserTasks(userId);
+
         return this.getUserById(userId).flatMapMany(taskUserOptional -> {
             if (taskUserOptional.isEmpty()) return Flux.empty();
             final String enumTaskStatus = this.toEnumString(taskStatus);
@@ -134,7 +159,13 @@ public class TaskUserServiceImpl implements TaskUserService {
      */
     @Override
     public Flux<Task> getUserTasksByGroupName(final String userId , final String groupName) {
+        if (userId == null)
+            return Flux.error(new NullPointerException(ErrorConstant.USER_ID_NULL));
+        if (userId.length() == 0)
+            return Flux.error(new IllegalArgumentException(ErrorConstant.USER_ID_EMPTY));
+
         if (groupName == null) return this.getUserTasks(userId);
+
         return this.getUserById(userId).flatMapMany(taskUserOptional -> {
             if (taskUserOptional.isEmpty()) return Flux.empty();
             final String upperCaseGroupName = groupName.toUpperCase(Locale.ROOT);
