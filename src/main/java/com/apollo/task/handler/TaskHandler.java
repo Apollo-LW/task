@@ -68,7 +68,8 @@ public class TaskHandler {
         return ServerResponse
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(isUpdated , Boolean.class);
+                .body(isUpdated , Boolean.class)
+                .doOnError(throwable -> ServerResponse.badRequest().build());
     }
 
     /**
@@ -86,7 +87,8 @@ public class TaskHandler {
         return ServerResponse
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(isDeleted , Boolean.class);
+                .body(isDeleted , Boolean.class)
+                .doOnError(throwable -> ServerResponse.badRequest().build());
     }
 
 }

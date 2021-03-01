@@ -1,5 +1,6 @@
 package com.apollo.task.service.impl;
 
+import com.apollo.task.constant.ErrorConstant;
 import com.apollo.task.kafka.service.KafkaService;
 import com.apollo.task.model.Quiz;
 import com.apollo.task.model.Task;
@@ -72,6 +73,11 @@ public class TaskServiceImpl implements TaskService {
      */
     @Override
     public Mono<Optional<Task>> getTaskById(final String taskId) {
+        if (taskId == null)
+            return Mono.error(new NullPointerException(ErrorConstant.TASK_ID_NULL));
+        if (taskId.length() == 0)
+            return Mono.error(new IllegalArgumentException(ErrorConstant.TASK_ID_EMPTY));
+
         return Mono.just(Optional.ofNullable(this.getTaskStateStore().get(taskId)));
     }
 
@@ -97,6 +103,11 @@ public class TaskServiceImpl implements TaskService {
      */
     @Override
     public Mono<Boolean> updateTask(final Mono<Task> taskMono , final String taskOwnerId) {
+        if (taskOwnerId == null)
+            return Mono.error(new NullPointerException(ErrorConstant.TASK_OWNER_ID_NULL));
+        if (taskOwnerId.length() == 0)
+            return Mono.error(new IllegalArgumentException(ErrorConstant.TASK_OWNER_ID_EMPTY));
+
         return taskMono.flatMap(task -> this.getTaskById(task.getTaskId()).flatMap(taskOptional -> {
             if (this.isNotValid(taskOptional , taskOwnerId)) return Mono.just(false);
             Task updatedTask = taskOptional.get();
@@ -121,6 +132,16 @@ public class TaskServiceImpl implements TaskService {
      */
     @Override
     public Mono<Boolean> deleteTask(final String taskId , final String taskOwnerId) {
+        if (taskId == null)
+            return Mono.error(new NullPointerException(ErrorConstant.TASK_ID_NULL));
+        if (taskId.length() == 0)
+            return Mono.error(new IllegalArgumentException(ErrorConstant.TASK_ID_EMPTY));
+
+        if (taskOwnerId == null)
+            return Mono.error(new NullPointerException(ErrorConstant.TASK_OWNER_ID_NULL));
+        if (taskOwnerId.length() == 0)
+            return Mono.error(new IllegalArgumentException(ErrorConstant.TASK_OWNER_ID_EMPTY));
+
         return this.getTaskById(taskId).flatMap(taskOptional -> {
             if (this.isNotValid(taskOptional , taskOwnerId)) return Mono.just(false);
             Task task = taskOptional.get();
