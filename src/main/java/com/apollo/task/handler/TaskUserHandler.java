@@ -25,7 +25,6 @@ public class TaskUserHandler {
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(userTasksFlux , Task.class)
-                .switchIfEmpty(ServerResponse.notFound().build())
                 .doOnError(throwable -> ServerResponse.badRequest().build());
     }
 
@@ -37,7 +36,6 @@ public class TaskUserHandler {
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(userTasksByTypeFlux , Task.class)
-                .switchIfEmpty(ServerResponse.notFound().build())
                 .doOnError(throwable -> ServerResponse.badRequest().build());
     }
 
@@ -49,7 +47,6 @@ public class TaskUserHandler {
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(userTasksByStatusFlux , Task.class)
-                .switchIfEmpty(ServerResponse.notFound().build())
                 .doOnError(throwable -> ServerResponse.badRequest().build());
     }
 
@@ -61,7 +58,6 @@ public class TaskUserHandler {
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(userTasksByGroupNameFlux , Task.class)
-                .switchIfEmpty(ServerResponse.notFound().build())
                 .doOnError(throwable -> ServerResponse.badRequest().build());
     }
 
