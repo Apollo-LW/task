@@ -10,9 +10,19 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+/**
+ * Configuration for the main quiz API router functions and connecting them with the {@link QuizHandler}
+ */
 @Configuration
 public class QuizRouterConfig {
 
+    /**
+     * Main routing function for the Quiz API BASE URI will start with {@link RoutingConstant#QUIZ_PATH} and accept JSON data for all requests
+     *
+     * @param quizHandler the main quiz Handler to make operations on the quiz objects that are sent from the requests
+     *
+     * @return a {@link RouterFunction} with the handler function return type {@link ServerResponse}
+     */
     @Bean
     public RouterFunction<ServerResponse> routeQuiz(final QuizHandler quizHandler) {
         return RouterFunctions
