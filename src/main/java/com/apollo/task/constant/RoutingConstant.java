@@ -10,6 +10,8 @@ public interface RoutingConstant {
     String OWNER_ID_PATH = "/{" + OWNER_ID + "}";
     String USER_ID = "userId";
     String USER_ID_PATH = "/{" + USER_ID + "}";
+    String QUIZ_ID = "quizId";
+    String QUIZ_ID_PATH = "/{" + QUIZ_ID + "}";
     String TASK_TYPE = "taskType";
     String TASK_TYPE_PATH = "/{" + TASK_TYPE + "}";
     String TASK_STATUS = "taskStatus";
