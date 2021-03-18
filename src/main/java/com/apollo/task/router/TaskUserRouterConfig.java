@@ -1,4 +1,4 @@
-package com.apollo.task.config;
+package com.apollo.task.router;
 
 import com.apollo.task.constant.RoutingConstant;
 import com.apollo.task.handler.TaskUserHandler;
